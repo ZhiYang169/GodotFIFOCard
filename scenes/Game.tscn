@@ -1,0 +1,129 @@
+[gd_scene load_steps=14 format=3 uid="uid://dv3kdydgc58a2"]
+
+[ext_resource type="Texture2D" uid="uid://ikstekks2jus" path="res://assets/textures/card_back.png" id="1_400sg"]
+[ext_resource type="Script" uid="uid://5ttxijjgell" path="res://src/ui/HandCardQueue.gd" id="1_ibkli"]
+[ext_resource type="Script" uid="uid://bbvks3kr4qh0o" path="res://src/game_logic/GameManager.gd" id="1_qbsmt"]
+[ext_resource type="Script" uid="uid://du3levtalbvrm" path="res://src/ui/PlayingCard.gd" id="2_mcffj"]
+[ext_resource type="PackedScene" uid="uid://bi13twqi7cj1c" path="res://scenes/card.tscn" id="3_cpr0p"]
+[ext_resource type="Script" uid="uid://bh5b0qi1bdmak" path="res://src/ui/ActiveCardSlot.gd" id="3_kiw3p"]
+[ext_resource type="Script" uid="uid://ba6elhra1vvqb" path="res://src/cards/CardManager.gd" id="4_78awf"]
+[ext_resource type="Script" uid="uid://dxetqeynjayvu" path="res://src/game_logic/StateMachine.gd" id="5_s0nni"]
+[ext_resource type="Script" uid="uid://hrv3gx0j0svd" path="res://src/game_logic/States/SetupState.gd" id="6_aug50"]
+[ext_resource type="Script" uid="uid://jdvm87xh0pxs" path="res://src/game_logic/States/IdleState.gd" id="9_g4kob"]
+[ext_resource type="Script" uid="uid://dwy3c4qra6v3e" path="res://src/game_logic/States/MatchingState.gd" id="10_3xj3m"]
+[ext_resource type="Script" uid="uid://ddcbhn0t8577t" path="res://src/game_logic/States/PalyingCardState.gd" id="11_mcffj"]
+[ext_resource type="Script" uid="uid://byv4idyad3l7l" path="res://src/game_logic/States/PopCardState.gd" id="13_2rd6h"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="BackGround" type="ColorRect" parent="."]
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.141176, 0.286275, 0.203922, 1)
+
+[node name="DrawPile" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 67.0
+offset_top = 716.0
+offset_right = 172.0
+offset_bottom = 856.0
+
+[node name="CardBack1" type="TextureRect" parent="DrawPile"]
+layout_mode = 0
+offset_right = 105.0
+offset_bottom = 140.0
+texture = ExtResource("1_400sg")
+expand_mode = 1
+
+[node name="CardBack2" type="TextureRect" parent="DrawPile"]
+layout_mode = 0
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 101.0
+offset_bottom = 136.0
+texture = ExtResource("1_400sg")
+expand_mode = 1
+
+[node name="CardBack3" type="TextureRect" parent="DrawPile"]
+layout_mode = 0
+offset_left = -8.0
+offset_top = -1.0
+offset_right = 97.0
+offset_bottom = 139.0
+texture = ExtResource("1_400sg")
+expand_mode = 1
+
+[node name="PlayingCard" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 68.0
+offset_top = 81.0
+offset_right = 1868.0
+offset_bottom = 221.0
+script = ExtResource("2_mcffj")
+card_scene = ExtResource("3_cpr0p")
+
+[node name="PlayingCardContainter" type="Control" parent="PlayingCard"]
+anchors_preset = 0
+offset_right = 1800.0
+offset_bottom = 140.0
+
+[node name="HandCardQueue" type="Control" parent="." node_paths=PackedStringArray("draw_pile")]
+anchors_preset = 0
+offset_left = 316.0
+offset_top = 631.0
+offset_right = 1616.0
+offset_bottom = 771.0
+script = ExtResource("1_ibkli")
+card_scene = ExtResource("3_cpr0p")
+deal_interval = 0.1
+fly_duration = 0.5
+draw_pile = NodePath("../DrawPile")
+
+[node name="HandCardContainter" type="Control" parent="HandCardQueue"]
+anchors_preset = 0
+offset_right = 1300.0
+offset_bottom = 140.0
+
+[node name="ActiveCardSlot" type="Control" parent="."]
+anchors_preset = 0
+offset_left = 944.0
+offset_top = 896.0
+offset_right = 984.0
+offset_bottom = 1036.0
+script = ExtResource("3_kiw3p")
+card_scene = ExtResource("3_cpr0p")
+
+[node name="CardManager" type="Node" parent="."]
+script = ExtResource("4_78awf")
+
+[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("card_manager")]
+script = ExtResource("1_qbsmt")
+card_manager = NodePath("../CardManager")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
+script = ExtResource("5_s0nni")
+initial_state = NodePath("SETUP")
+
+[node name="SETUP" type="Node" parent="StateMachine"]
+script = ExtResource("6_aug50")
+
+[node name="IDLE" type="Node" parent="StateMachine"]
+script = ExtResource("9_g4kob")
+metadata/_custom_type_script = "uid://seby4cehylx1"
+
+[node name="MATCHING" type="Node" parent="StateMachine"]
+script = ExtResource("10_3xj3m")
+metadata/_custom_type_script = "uid://seby4cehylx1"
+
+[node name="PLAYING" type="Node" parent="StateMachine"]
+script = ExtResource("11_mcffj")
+metadata/_custom_type_script = "uid://seby4cehylx1"
+
+[node name="POP_CARD" type="Node" parent="StateMachine"]
+script = ExtResource("13_2rd6h")
+metadata/_custom_type_script = "uid://byv4idyad3l7l"
+
+[node name="DragLayer" type="CanvasLayer" parent="."]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="LevelConfig" load_steps=2 format=3 uid="uid://ciderxp3okgtn"]
+
+[ext_resource type="Script" uid="uid://b4x0m1s8iwhj3" path="res://src/data/LevelConfig.gd" id="1_ae637"]
+
+[resource]
+script = ExtResource("1_ae637")
+level_id = 2
+target_score = 994
+hand_size = 15
+metadata/_custom_type_script = "uid://b4x0m1s8iwhj3"

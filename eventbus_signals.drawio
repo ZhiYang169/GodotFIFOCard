@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="draw.io" version="26.0.0">
+  <diagram name="FIFOCard EventBus Signals">
+    <mxGraphModel dx="1600" dy="1100" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="FIFOCard EventBus Signal Architecture" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=22;fontStyle=1;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="500" y="10" width="600" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== SWIMLANES ==================== -->
+
+        <!-- View Layer Swimlane -->
+        <mxCell id="sw-view" value="View Layer (UI)" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=13;swimlaneFillColor=#e8f0fc;" vertex="1" parent="1">
+          <mxGeometry x="30" y="60" width="1540" height="300" as="geometry" />
+        </mxCell>
+
+        <!-- Controller Layer Swimlane -->
+        <mxCell id="sw-ctrl" value="Controller (State Machine)" style="swimlane;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=13;swimlaneFillColor=#fff8e0;" vertex="1" parent="1">
+          <mxGeometry x="30" y="390" width="1540" height="230" as="geometry" />
+        </mxCell>
+
+        <!-- Model Layer Swimlane -->
+        <mxCell id="sw-model" value="Model (Logic)" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=13;swimlaneFillColor=#e8f5e8;" vertex="1" parent="1">
+          <mxGeometry x="30" y="650" width="1540" height="240" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== VIEW LAYER NODES ==================== -->
+
+        <!-- Card -->
+        <mxCell id="v-card" value="Card&#xa;(Card.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="sw-view">
+          <mxGeometry x="60" y="60" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- HandCardQueue -->
+        <mxCell id="v-handqueue" value="HandCardQueue&#xa;(HandCardQueue.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="sw-view">
+          <mxGeometry x="330" y="60" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ActiveCardSlot -->
+        <mxCell id="v-activeslot" value="ActiveCardSlot&#xa;(ActiveCardSlot.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="sw-view">
+          <mxGeometry x="650" y="60" width="180" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- PlayingCard -->
+        <mxCell id="v-playing" value="PlayingCard&#xa;(PlayingCard.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="sw-view">
+          <mxGeometry x="970" y="60" width="170" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== CONTROLLER LAYER NODES ==================== -->
+
+        <!-- SetupState -->
+        <mxCell id="c-setup" value="SetupState&#xa;(SetupState.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="sw-ctrl">
+          <mxGeometry x="220" y="50" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- IdleState -->
+        <mxCell id="c-idle" value="IdleState&#xa;(IdleState.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="sw-ctrl">
+          <mxGeometry x="560" y="50" width="150" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- PlayingCardState -->
+        <mxCell id="c-playing" value="PlayingCardState&#xa;(PalyingCardState.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=12;fontStyle=1;" vertex="1" parent="sw-ctrl">
+          <mxGeometry x="880" y="50" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== MODEL LAYER NODES ==================== -->
+
+        <!-- GameManager -->
+        <mxCell id="m-gamemgr" value="GameManager&#xa;(GameManager.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=12;fontStyle=1;" vertex="1" parent="sw-model">
+          <mxGeometry x="390" y="60" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- CardManager -->
+        <mxCell id="m-cardmgr" value="CardManager&#xa;(CardManager.gd)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontSize=12;fontStyle=1;dashed=1;dashPattern=8 4;" vertex="1" parent="sw-model">
+          <mxGeometry x="740" y="60" width="190" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- CardManager note -->
+        <mxCell id="m-cardmgr-note" value="signals have no receivers&#xa;(dead code)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;fontColor=#999999;fontStyle=2;" vertex="1" parent="sw-model">
+          <mxGeometry x="740" y="125" width="190" height="30" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== LEGEND ==================== -->
+
+        <mxCell id="legend-box" value="Legend" style="swimlane;startSize=22;fillColor=#f5f5f5;strokeColor=#666666;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="1250" y="920" width="320" height="150" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg-1" value="" style="endArrow=classic;html=1;strokeColor=#6c8ebf;strokeWidth=2;" edge="1" parent="legend-box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="15" y="40" as="sourcePoint" />
+            <mxPoint x="65" y="40" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-1-label" value="Logic → UI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="legend-box">
+          <mxGeometry x="70" y="28" width="100" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg-2" value="" style="endArrow=classic;html=1;strokeColor=#82b366;strokeWidth=2;" edge="1" parent="legend-box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="15" y="65" as="sourcePoint" />
+            <mxPoint x="65" y="65" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-2-label" value="UI → Controller / UI→UI" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="legend-box">
+          <mxGeometry x="70" y="53" width="160" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg-3" value="" style="endArrow=classic;html=1;strokeColor=#9673a6;strokeWidth=2;" edge="1" parent="legend-box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="15" y="90" as="sourcePoint" />
+            <mxPoint x="65" y="90" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-3-label" value="UI ↔ UI (drag-drop)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="legend-box">
+          <mxGeometry x="70" y="78" width="140" height="24" as="geometry" />
+        </mxCell>
+
+        <mxCell id="leg-4" value="" style="endArrow=classic;html=1;strokeColor=#d79b00;strokeWidth=2;dashed=1;dashPattern=8 4;" edge="1" parent="legend-box">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="15" y="115" as="sourcePoint" />
+            <mxPoint x="65" y="115" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="leg-4-label" value="Dead signal (no receiver)" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=10;" vertex="1" parent="legend-box">
+          <mxGeometry x="70" y="103" width="150" height="24" as="geometry" />
+        </mxCell>
+
+        <!-- Unused signals note -->
+        <mxCell id="note-unused" value="7 unused signals (placeholder):&#xa;card_slot_clicked, active_card_played, item_used,&#xa;shop_item_purchased, next_level_requested,&#xa;restart_requested, return_to_menu_requested" style="text;html=1;strokeColor=#b85450;fillColor=#f8cecc;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;fontColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="30" y="920" width="310" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== EDGES: GameManager → View ==================== -->
+
+        <!-- GameManager → HandCardQueue: card_drawned -->
+        <mxCell id="e-gm-hq-drawned" value="card_drawned" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=0.25;exitY=0;exitDx=0;exitDy=0;entryX=0.2;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="m-gamemgr" target="v-handqueue">
+          <mxGeometry x="-0.2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- GameManager → HandCardQueue: level_started -->
+        <mxCell id="e-gm-hq-level" value="level_started" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="m-gamemgr" target="v-handqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameManager → HandCardQueue: update_hand_queue_ui -->
+        <mxCell id="e-gm-hq-update" value="update_hand_queue_ui" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.8;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="m-gamemgr" target="v-handqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- GameManager → ActiveCardSlot: active_card_changed -->
+        <mxCell id="e-gm-as-changed" value="active_card_changed" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="m-gamemgr" target="v-activeslot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="620" y="710" />
+              <mxPoint x="620" y="380" />
+              <mxPoint x="740" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EDGES: Card → HandCardQueue / ActiveCardSlot ==================== -->
+
+        <!-- Card → HandCardQueue: card_drag_started -->
+        <mxCell id="e-c-hq-dragstart" value="card_drag_started" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9673a6;strokeWidth=2;fontSize=10;fontColor=#9673a6;exitX=1;exitY=0.25;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-card" target="v-handqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Card → HandCardQueue: card_droped -->
+        <mxCell id="e-c-hq-droped" value="card_droped" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9673a6;strokeWidth=2;fontSize=10;fontColor=#9673a6;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-card" target="v-handqueue">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Card → ActiveCardSlot: card_drag_started -->
+        <mxCell id="e-c-as-dragstart" value="card_drag_started" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9673a6;strokeWidth=2;fontSize=10;fontColor=#9673a6;exitX=0.4;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-card" target="v-activeslot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="116" y="200" />
+              <mxPoint x="620" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Card → ActiveCardSlot: card_droped -->
+        <mxCell id="e-c-as-droped" value="card_droped" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#9673a6;strokeWidth=2;fontSize=10;fontColor=#9673a6;exitX=0.6;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-card" target="v-activeslot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="144" y="240" />
+              <mxPoint x="620" y="240" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EDGES: HandCardQueue → Controller / ActiveCardSlot ==================== -->
+
+        <!-- HandCardQueue → IdleState: active_card_inserted -->
+        <mxCell id="e-hq-idle-inserted" value="active_card_inserted" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;fontSize=10;fontColor=#82b366;exitX=0.3;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-handqueue" target="c-idle">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="384" y="320" />
+              <mxPoint x="635" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- HandCardQueue → ActiveCardSlot: active_card_inserted -->
+        <mxCell id="e-hq-as-inserted" value="active_card_inserted" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;fontSize=10;fontColor=#82b366;exitX=0.6;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="v-handqueue" target="v-activeslot">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="438" y="200" />
+              <mxPoint x="740" y="200" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- HandCardQueue → SetupState: deal_animation_finished -->
+        <mxCell id="e-hq-setup-deal" value="deal_animation_finished (await)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#82b366;strokeWidth=2;fontSize=10;fontColor=#82b366;exitX=0.15;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="1" source="v-handqueue" target="c-setup">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="357" y="300" />
+              <mxPoint x="295" y="300" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EDGES: PlayingCardState → View ==================== -->
+
+        <!-- PlayingCardState → PlayingCard: get_playing_card -->
+        <mxCell id="e-ps-pc-get" value="get_playing_card" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=0.3;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c-playing" target="v-playing">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- PlayingCardState → HandCardQueue: get_playing_card -->
+        <mxCell id="e-ps-hq-get" value="get_playing_card" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#6c8ebf;strokeWidth=2;fontSize=10;fontColor=#6c8ebf;exitX=0.7;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="c-playing" target="v-handqueue">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1020" y="380" />
+              <mxPoint x="420" y="380" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== DEAD SIGNAL EDGES (emitted but nobody listens) ==================== -->
+
+        <!-- CardManager → (none): poker_deck_shuffled -->
+        <mxCell id="e-cm-shuffled" value="poker_deck_shuffled ❌" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;strokeWidth=2;fontSize=10;fontColor=#d79b00;exitX=0.3;exitY=0;exitDx=0;exitDy=0;dashed=1;dashPattern=8 4;" edge="1" parent="1" source="m-cardmgr">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="760" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="797" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- CardManager → (none): poker_deck_is_empty -->
+        <mxCell id="e-cm-empty" value="poker_deck_is_empty ❌" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;strokeWidth=2;fontSize=10;fontColor=#d79b00;exitX=0.7;exitY=0;exitDx=0;exitDy=0;dashed=1;dashPattern=8 4;" edge="1" parent="1" source="m-cardmgr">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="900" y="600" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="873" y="620" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Card → (none): card_selected -->
+        <mxCell id="e-card-selected" value="card_selected ❌" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#d79b00;strokeWidth=2;fontSize=10;fontColor=#d79b00;exitX=0.5;exitY=0;exitDx=0;exitDy=0;dashed=1;dashPattern=8 4;" edge="1" parent="1" source="v-card">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="130" y="30" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EVENTBUS CENTER NOTE ==================== -->
+
+        <mxCell id="eb-note" value="All signals go through&#xa;EventBus (autoload)&#xa;src/autoload/EventBus.gd" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;fontStyle=1;size=16;align=center;" vertex="1" parent="1">
+          <mxGeometry x="380" y="920" width="200" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Stats box -->
+        <mxCell id="stats-box" value="Active signals: 9&#xa;Dead signals (no receiver): 3&#xa;Unused placeholders: 7&#xa;Total defined: 19" style="text;html=1;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;whiteSpace=wrap;rounded=1;fontSize=10;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="620" y="920" width="200" height="80" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

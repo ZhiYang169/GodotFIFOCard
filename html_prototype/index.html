@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFOCard</title>
+    <!-- Tailwind CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="./css/style.css?v=7">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col font-sans text-gray-900 select-none overflow-hidden">
+    
+    <!-- Header: Stats -->
+    <header class="w-full flex justify-between items-center p-6 bg-white shadow-sm z-10 relative">
+        <div class="flex gap-8">
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">金币</span>
+                <span id="gold-display" class="text-3xl font-bold text-yellow-500 transition-colors">4</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">得分</span>
+                <span id="score-display" class="text-3xl font-bold text-gray-900 transition-colors">0</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">最高分</span>
+                <span id="highscore-display" class="text-3xl font-bold text-yellow-600">0</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">关卡</span>
+                <span id="level-display" class="text-3xl font-bold text-indigo-600">1</span>
+            </div>
+            <div class="flex flex-col">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">关卡目标</span>
+                <span id="target-score-display" class="text-3xl font-bold text-purple-600">1000</span>
+            </div>
+        </div>
+        <div class="absolute left-1/2 transform -translate-x-1/2">
+            <h1 class="text-2xl font-bold tracking-tight text-gray-800">FIFOCard</h1>
+        </div>
+        <div class="flex flex-col items-end gap-2">
+            <div class="flex items-center gap-2 mb-1">
+                <input type="checkbox" id="debug-mode-toggle" class="w-4 h-4 text-blue-600 rounded focus:ring-blue-500 cursor-pointer">
+                <label for="debug-mode-toggle" class="text-xs text-gray-600 font-semibold cursor-pointer tracking-wide">DEBUG连消</label>
+            </div>
+            <div class="flex flex-col items-end">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">DECK</span>
+                <span id="deck-display" class="text-3xl font-bold text-gray-900">--</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <label for="hand-size-select" class="text-xs text-gray-500 font-semibold tracking-wide">HAND</label>
+                <select id="hand-size-select" class="border border-gray-300 rounded px-2 py-1 text-sm font-semibold text-gray-700 bg-white focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                </select>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Game Area -->
+    <main class="flex-grow flex flex-col items-center justify-start pt-8 p-4 relative w-full overflow-hidden">
+        
+        <!-- Play Area -->
+        <div class="w-full max-w-[1200px] mb-4 flex flex-col items-center">
+            <span class="text-xs text-gray-400 font-bold tracking-widest mb-2">PLAY AREA</span>
+            <div id="play-area-container" class="w-full min-h-[128px] border-2 border-dashed border-gray-300 rounded-2xl bg-white bg-opacity-50 flex items-center justify-center gap-2 shadow-inner overflow-x-auto p-3">
+                <!-- Played cards will be injected here -->
+            </div>
+            <button id="confirm-round-btn" class="mt-3 px-5 py-2 rounded-lg bg-green-600 text-white text-sm font-semibold hover:bg-green-700 transition-colors focus:outline-none focus:ring-2 focus:ring-green-400 disabled:bg-gray-300 disabled:text-gray-600 disabled:cursor-not-allowed" disabled>
+                确定并继续
+            </button>
+        </div>
+
+        <div id="combo-badge" class="w-full max-w-6xl mb-3 text-center text-sm font-bold text-red-500 opacity-0 transform translate-y-2 transition-all duration-300 min-h-[24px]"></div>
+
+        <!-- Hand Queue Area -->
+        <div class="w-full max-w-6xl mb-12 relative flex justify-center items-center min-h-[160px] gap-8">
+            <!-- Next Card Preview -->
+            <div class="flex flex-col items-center gap-2 flex-shrink-0">
+                <span class="text-sm text-gray-500 font-medium tracking-wide">即将补牌</span>
+                <div id="next-card-preview-container" class="h-36 w-24 flex items-center justify-center card-slot bg-gray-50 rounded-lg opacity-80 pointer-events-none"></div>
+            </div>
+
+            <div id="hand-container" class="flex flex-row items-center justify-center gap-1">
+                <!-- Cards and Drop Zones will be injected here by JS -->
+            </div>
+        </div>
+
+        <!-- Active Card Area -->
+        <div class="mt-8 flex flex-col items-center gap-4">
+            <div class="flex items-start justify-center gap-10">
+                <div class="flex flex-col items-center gap-2">
+                    <span class="text-sm text-gray-500 font-medium tracking-wide">激活牌</span>
+                    <div id="active-card-container" class="h-36 w-24 flex items-center justify-center card-slot"></div>
+                    <button id="select-active-btn" class="px-3 py-1 rounded-md bg-indigo-100 text-indigo-700 text-xs font-semibold hover:bg-indigo-200 transition-colors">
+                        使用当前激活牌
+                    </button>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="drop-tail-btn" class="px-4 py-2 rounded-lg bg-indigo-600 text-white text-sm font-semibold hover:bg-indigo-700 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-400">
+                    放到左端
+                </button>
+                <button id="rank-sort-preview-btn" class="rank-sort-preview-btn px-4 py-2 rounded-lg bg-sky-600 text-white text-sm font-semibold hover:bg-sky-700 transition-colors focus:outline-none focus:ring-2 focus:ring-sky-400">
+                    按住查看点数排序
+                </button>
+            </div>
+        </div>
+        
+    </main>
+
+    <button id="debug-continue-btn" class="hidden fixed top-3/4 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-red-600 hover:bg-red-700 text-white px-8 py-4 rounded-xl font-bold shadow-2xl z-50 transition-colors text-lg ring-4 ring-red-300">
+        继续判定连消 (DEBUG)
+    </button>
+
+    <!-- Prop Slots (Bottom Right) -->
+    <div class="fixed bottom-6 right-6 flex flex-col items-center gap-2 z-40 bg-white/80 p-3 rounded-xl shadow-lg backdrop-blur-sm border border-gray-200">
+        <span class="text-sm text-gray-800 font-bold tracking-wide">道具卡槽</span>
+        <div class="flex gap-3">
+            <div class="flex flex-col items-center gap-2">
+                <div id="item-slot-0-container" class="h-36 w-24 flex items-center justify-center card-slot bg-gray-50 rounded-lg"></div>
+                <button id="use-item-0-btn" class="px-3 py-1 rounded-md bg-gray-200 text-gray-500 text-xs font-semibold transition-colors w-full" disabled>
+                    使用道具1
+                </button>
+            </div>
+            <div class="flex flex-col items-center gap-2">
+                <div id="item-slot-1-container" class="h-36 w-24 flex items-center justify-center card-slot bg-gray-50 rounded-lg"></div>
+                <button id="use-item-1-btn" class="px-3 py-1 rounded-md bg-gray-200 text-gray-500 text-xs font-semibold transition-colors w-full" disabled>
+                    使用道具2
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Over Modal -->
+    <div id="game-over-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center transform scale-95 transition-transform duration-300" id="modal-content">
+            <h2 class="text-3xl font-bold mb-2 text-gray-900">Game Over</h2>
+            <p class="text-gray-500 mb-6">No more cards in the deck</p>
+            <div class="text-center mb-8">
+                <span class="block text-sm text-gray-500 font-medium tracking-wide">FINAL SCORE</span>
+                <span id="final-score" class="text-5xl font-bold text-blue-600 block mb-2">0</span>
+                <span id="new-record-badge" class="hidden bg-yellow-100 text-yellow-800 text-sm font-bold px-3 py-1 rounded shadow-sm">NEW RECORD!</span>
+            </div>
+            <button id="restart-btn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-full transition-colors shadow-md hover:shadow-lg focus:outline-none">
+                Play Again
+            </button>
+        </div>
+    </div>
+
+    <!-- Level Clear Modal -->
+    <div id="level-clear-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center transform scale-95 transition-transform duration-300" id="level-clear-modal-content">
+            <h2 class="text-3xl font-bold mb-2 text-indigo-600">Level Clear!</h2>
+            <p class="text-gray-500 mb-6">Target Score Reached</p>
+            
+            <div class="w-full bg-gray-50 rounded-xl p-4 mb-6 shadow-inner">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-500 font-medium">当前金币</span>
+                    <span id="lc-current-gold" class="text-lg font-bold text-gray-800">0</span>
+                </div>
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-gray-500 font-medium">利息 (每5金币+1)</span>
+                    <span id="lc-interest" class="text-lg font-bold text-green-500">+0</span>
+                </div>
+                <div class="flex justify-between items-center mb-4 border-b border-gray-200 pb-2">
+                    <span class="text-sm text-gray-500 font-medium">关卡收益</span>
+                    <span id="lc-reward" class="text-lg font-bold text-green-500">+3</span>
+                </div>
+                <div class="flex justify-between items-center">
+                    <span class="text-sm text-gray-800 font-bold">总金币</span>
+                    <span id="lc-total-gold" class="text-2xl font-bold text-yellow-500">0</span>
+                </div>
+            </div>
+
+            <button id="next-level-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-full transition-colors shadow-md hover:shadow-lg focus:outline-none">
+                确定
+            </button>
+        </div>
+    </div>
+
+    <!-- Shop Modal -->
+    <div id="shop-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl flex flex-col items-center transform scale-95 transition-transform duration-300 w-[500px] max-w-[95vw]" id="shop-modal-content">
+            <h2 class="text-3xl font-bold mb-2 text-purple-600">道具商店</h2>
+            <p class="text-gray-500 mb-6 text-sm">每次刷新2张道具，未购买的将回收至道具堆</p>
+            
+            <div id="shop-cards-container" class="w-full flex justify-center gap-6 mb-8 min-h-[160px]">
+                <!-- Shop items will be injected here -->
+            </div>
+
+            <button id="close-shop-btn" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 px-8 rounded-full transition-colors shadow-sm focus:outline-none">
+                离开商店进入下一关
+            </button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="./js/game.js?v=13"></script>
+</body>
+</html>

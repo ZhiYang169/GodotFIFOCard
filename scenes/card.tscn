@@ -1,0 +1,70 @@
+[gd_scene load_steps=7 format=3 uid="uid://bi13twqi7cj1c"]
+
+[ext_resource type="Texture2D" uid="uid://kpyk2rrer7o4" path="res://assets/textures/card_clubs_A.png" id="1_6u4wf"]
+[ext_resource type="Script" uid="uid://we6dkeri4h8i" path="res://src/cards/Card.gd" id="1_ktuci"]
+[ext_resource type="Texture2D" uid="uid://ikstekks2jus" path="res://assets/textures/card_back.png" id="2_6u4wf"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d81rb"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.929412, 0.705882, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6u4wf"]
+bg_color = Color(0.6, 0.6, 0.6, 0.415686)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0.803922, 0.211765, 0, 1)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_ktuci"]
+
+[node name="Card" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 150.0
+offset_bottom = 200.0
+script = ExtResource("1_ktuci")
+
+[node name="Front" type="Panel" parent="."]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 200.0
+
+[node name="CardFront" type="TextureRect" parent="Front"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 200.0
+texture = ExtResource("1_6u4wf")
+expand_mode = 1
+
+[node name="Back" type="Panel" parent="."]
+visible = false
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 200.0
+
+[node name="CardBack" type="TextureRect" parent="Back"]
+layout_mode = 0
+offset_right = 150.0
+offset_bottom = 200.0
+texture = ExtResource("2_6u4wf")
+expand_mode = 1
+
+[node name="CardButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = -2.0
+offset_top = -2.0
+offset_right = 152.0
+offset_bottom = 202.0
+mouse_filter = 1
+theme_override_styles/hover = SubResource("StyleBoxFlat_d81rb")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6u4wf")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_ktuci")
+
+[connection signal="button_down" from="CardButton" to="." method="_on_card_button_button_down"]
+[connection signal="button_up" from="CardButton" to="." method="_on_card_button_button_up"]
+[connection signal="pressed" from="CardButton" to="." method="_on_card_button_pressed"]

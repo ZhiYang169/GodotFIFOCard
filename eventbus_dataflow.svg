@@ -1,0 +1,310 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 720">
+  <style>
+    text {
+      font-family: 'Inter', -apple-system, 'SF Pro Display', 'PingFang SC', 'Microsoft YaHei', 'Microsoft JhengHei', 'SimHei', sans-serif;
+      fill: #f0f6fc;
+    }
+  </style>
+
+  <defs>
+    <!-- Background gradients -->
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="50%" stop-color="#161b22"/>
+      <stop offset="100%" stop-color="#0d1117"/>
+    </linearGradient>
+
+    <!-- Ambient glow spots -->
+    <radialGradient id="glow-blue-amb" cx="20%" cy="30%" r="40%">
+      <stop offset="0%" stop-color="rgba(88,166,255,0.10)"/>
+      <stop offset="100%" stop-color="rgba(88,166,255,0)"/>
+    </radialGradient>
+    <radialGradient id="glow-purple-amb" cx="80%" cy="50%" r="35%">
+      <stop offset="0%" stop-color="rgba(188,140,255,0.08)"/>
+      <stop offset="100%" stop-color="rgba(188,140,255,0)"/>
+    </radialGradient>
+    <radialGradient id="glow-green-amb" cx="90%" cy="80%" r="30%">
+      <stop offset="0%" stop-color="rgba(63,185,80,0.06)"/>
+      <stop offset="100%" stop-color="rgba(63,185,80,0)"/>
+    </radialGradient>
+
+    <!-- Gradient text -->
+    <linearGradient id="text-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#58a6ff"/>
+      <stop offset="50%" stop-color="#bc8cff"/>
+      <stop offset="100%" stop-color="#3fb950"/>
+    </linearGradient>
+
+    <!-- Card glow filters -->
+    <filter id="glow-blue" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#58a6ff" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glow-purple" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="0" stdDeviation="6" flood-color="#bc8cff" flood-opacity="0.30"/>
+    </filter>
+    <filter id="glow-green" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#3fb950" flood-opacity="0.25"/>
+    </filter>
+    <filter id="glow-orange" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#f78166" flood-opacity="0.15"/>
+    </filter>
+
+    <!-- Arrow markers -->
+    <marker id="arr-blue" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#58a6ff"/>
+    </marker>
+    <marker id="arr-orange" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f78166"/>
+    </marker>
+    <marker id="arr-purple" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#bc8cff"/>
+    </marker>
+    <marker id="arr-green" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#3fb950"/>
+    </marker>
+
+    <!-- Glass card filter -->
+    <filter id="glass-blur">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- ====== BACKGROUND ====== -->
+  <rect width="960" height="720" fill="url(#bg)"/>
+  <rect width="960" height="720" fill="url(#glow-blue-amb)"/>
+  <rect width="960" height="720" fill="url(#glow-purple-amb)"/>
+  <rect width="960" height="720" fill="url(#glow-green-amb)"/>
+
+  <!-- Subtle grid lines -->
+  <g opacity="0.03" stroke="#58a6ff" stroke-width="0.5">
+    <line x1="0" y1="120" x2="960" y2="120"/>
+    <line x1="0" y1="240" x2="960" y2="240"/>
+    <line x1="0" y1="360" x2="960" y2="360"/>
+    <line x1="0" y1="480" x2="960" y2="480"/>
+  </g>
+
+  <!-- ====== SECTION HEADERS ====== -->
+  <text x="137" y="50" text-anchor="middle" fill="url(#text-grad)" font-size="18" font-weight="700">UI 层 (View)</text>
+  <text x="480" y="50" text-anchor="middle" fill="url(#text-grad)" font-size="18" font-weight="700">EventBus · 事件总线</text>
+  <text x="823" y="50" text-anchor="middle" fill="url(#text-grad)" font-size="18" font-weight="700">逻辑层 (Logic)</text>
+
+  <!-- Subtle divider lines under headers -->
+  <line x1="40" y1="65" x2="235" y2="65" stroke="rgba(88,166,255,0.2)" stroke-width="1"/>
+  <line x1="345" y1="65" x2="615" y2="65" stroke="rgba(188,140,255,0.2)" stroke-width="1"/>
+  <line x1="725" y1="65" x2="920" y2="65" stroke="rgba(63,185,80,0.2)" stroke-width="1"/>
+
+  <!-- ====== ARROWS (drawn before cards so they go "through" EventBus glass) ====== -->
+
+  <!-- === Category 1: UI → Logic (Blue, solid) === -->
+  <!-- Arrow 1: card_slot_clicked — HandCardQueue → StateMachine -->
+  <path d="M 235,128 L 725,128" stroke="#58a6ff" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-blue)"/>
+  <text x="370" y="122" fill="#58a6ff" font-size="10" opacity="0.9">card_slot_clicked</text>
+
+  <!-- Arrow 2: card_selected — HandCardQueue → GameManager -->
+  <path d="M 235,156 L 725,156" stroke="#58a6ff" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-blue)"/>
+  <text x="370" y="150" fill="#58a6ff" font-size="10" opacity="0.9">card_selected</text>
+
+  <!-- Arrow 3: update_hand_queue_ui — HandCardQueue → EventBus (stops at EventBus) -->
+  <path d="M 235,182 L 615,182" stroke="#58a6ff" stroke-width="1" fill="none" opacity="0.6" marker-end="url(#arr-blue)"/>
+  <text x="370" y="195" fill="#58a6ff" font-size="9" opacity="0.7">update_hand_queue_ui</text>
+
+  <!-- Arrow 4: active_card_played — ActiveCardSlot → StateMachine -->
+  <path d="M 235,268 L 725,268" stroke="#58a6ff" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-blue)"/>
+  <text x="370" y="262" fill="#58a6ff" font-size="10" opacity="0.9">active_card_played</text>
+
+  <!-- Arrow 5: card_drag_started — Card → GameManager -->
+  <path d="M 235,400 L 725,400" stroke="#58a6ff" stroke-width="1.2" fill="none" opacity="0.7" marker-end="url(#arr-blue)"/>
+  <text x="370" y="394" fill="#58a6ff" font-size="10" opacity="0.8">card_drag_started</text>
+
+  <!-- Arrow 6: card_droped — Card → HandCardQueue (UI internal, left side) -->
+  <path d="M 235,430 L 265,430 L 265,150 L 235,150" stroke="#3fb950" stroke-width="1.2" fill="none" stroke-dasharray="4,2" opacity="0.7"/>
+  <polygon points="235,147 231,150 235,153" fill="#3fb950" opacity="0.7"/>
+  <text x="268" y="295" fill="#3fb950" font-size="9" opacity="0.8" transform="rotate(-90,268,295)">card_droped (UI↔UI)</text>
+
+  <!-- === Category 2: Logic → UI (Orange, solid) === -->
+  <!-- Arrow 7: level_started — GameManager → HandCardQueue -->
+  <path d="M 725,210 L 235,210" stroke="#f78166" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-orange)"/>
+  <text x="480" y="204" fill="#f78166" font-size="10" opacity="0.9">level_started</text>
+
+  <!-- Arrow 8: active_card_changed — GameManager → ActiveCardSlot -->
+  <path d="M 725,298 L 235,298" stroke="#f78166" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-orange)"/>
+  <text x="480" y="292" fill="#f78166" font-size="10" opacity="0.9">active_card_changed</text>
+
+  <!-- Arrow 9: active_card_inserted — GameManager → HandCardQueue -->
+  <path d="M 725,326 L 235,326" stroke="#f78166" stroke-width="1" fill="none" opacity="0.7" marker-end="url(#arr-orange)"/>
+  <text x="480" y="339" fill="#f78166" font-size="9" opacity="0.7">active_card_inserted</text>
+
+  <!-- Arrow 10: get_playing_card — StateMachine → ActiveCardSlot -->
+  <path d="M 725,240 L 235,240" stroke="#f78166" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-orange)"/>
+  <text x="480" y="234" fill="#f78166" font-size="10" opacity="0.9">get_playing_card</text>
+
+  <!-- Arrow 11: card_drawned — CardManager → HandCardQueue -->
+  <path d="M 725,430 L 235,430" stroke="#f78166" stroke-width="1.5" fill="none" opacity="0.8" marker-end="url(#arr-orange)"/>
+  <text x="480" y="424" fill="#f78166" font-size="10" opacity="0.9">card_drawned</text>
+
+  <!-- === Category 3: Logic Internal (Purple, dashed) === -->
+  <!-- Arrow 12: poker_deck_shuffled — CardManager → GameManager -->
+  <path d="M 910,400 L 910,340 L 930,340 L 930,300 L 920,300" stroke="#bc8cff" stroke-width="1.2" fill="none" stroke-dasharray="5,3" opacity="0.7" marker-end="url(#arr-purple)"/>
+  <text x="912" y="360" fill="#bc8cff" font-size="9" opacity="0.8">poker_deck_shuffled</text>
+
+  <!-- Arrow 13: poker_deck_is_empty — CardManager → GameManager -->
+  <path d="M 910,420 L 910,360 L 930,360 L 930,320 L 920,320" stroke="#bc8cff" stroke-width="1" fill="none" stroke-dasharray="5,3" opacity="0.6" marker-end="url(#arr-purple)"/>
+  <text x="912" y="385" fill="#bc8cff" font-size="8" opacity="0.7">poker_deck_is_empty</text>
+
+  <!-- Arrow 14: deal_animation_finished — CardManager → StateMachine -->
+  <path d="M 910,440 L 940,440 L 940,140 L 920,140" stroke="#bc8cff" stroke-width="1.2" fill="none" stroke-dasharray="5,3" opacity="0.7" marker-end="url(#arr-purple)"/>
+  <text x="942" y="295" fill="#bc8cff" font-size="9" opacity="0.8" transform="rotate(90,942,295)">deal_animation_finished</text>
+
+  <!-- ====== UI CARDS (Left Column) ====== -->
+
+  <!-- HandCardQueue card -->
+  <g filter="url(#glow-blue)">
+    <rect x="40" y="90" width="195" height="105" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(88,166,255,0.25)" stroke-width="1"/>
+  </g>
+  <rect x="40" y="90" width="195" height="105" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <line x1="56" y1="91" x2="219" y2="91" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <text x="137" y="112" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">HandCardQueue</text>
+  <text x="55" y="130" fill="#58a6ff" font-size="9">▸ card_slot_clicked</text>
+  <text x="55" y="143" fill="#58a6ff" font-size="9">▸ card_selected</text>
+  <text x="55" y="156" fill="#58a6ff" font-size="9">▸ update_hand_queue_ui</text>
+  <text x="55" y="173" fill="#f78166" font-size="9">◂ card_drawned</text>
+  <text x="55" y="186" fill="#f78166" font-size="9">◂ level_started</text>
+
+  <!-- ActiveCardSlot card -->
+  <g filter="url(#glow-blue)">
+    <rect x="40" y="230" width="195" height="90" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(88,166,255,0.25)" stroke-width="1"/>
+  </g>
+  <rect x="40" y="230" width="195" height="90" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <line x1="56" y1="231" x2="219" y2="231" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <text x="137" y="252" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">ActiveCardSlot</text>
+  <text x="55" y="270" fill="#58a6ff" font-size="9">▸ active_card_played</text>
+  <text x="55" y="287" fill="#f78166" font-size="9">◂ active_card_changed</text>
+  <text x="55" y="304" fill="#f78166" font-size="9">◂ get_playing_card</text>
+
+  <!-- Card (drag) card -->
+  <g filter="url(#glow-blue)">
+    <rect x="40" y="370" width="195" height="85" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(88,166,255,0.20)" stroke-width="1"/>
+  </g>
+  <rect x="40" y="370" width="195" height="85" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+  <line x1="56" y1="371" x2="219" y2="371" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <text x="137" y="392" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">Card (拖拽源)</text>
+  <text x="55" y="410" fill="#58a6ff" font-size="9">▸ card_drag_started</text>
+  <text x="55" y="427" fill="#3fb950" font-size="9">↔ card_droped</text>
+
+  <!-- ====== LOGIC CARDS (Right Column) ====== -->
+
+  <!-- StateMachine card -->
+  <g filter="url(#glow-green)">
+    <rect x="725" y="90" width="195" height="105" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(63,185,80,0.25)" stroke-width="1"/>
+  </g>
+  <rect x="725" y="90" width="195" height="105" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <line x1="741" y1="91" x2="904" y2="91" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <text x="822" y="112" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">StateMachine</text>
+  <text x="740" y="130" fill="#58a6ff" font-size="9">◂ card_slot_clicked</text>
+  <text x="740" y="143" fill="#58a6ff" font-size="9">◂ active_card_played</text>
+  <text x="740" y="160" fill="#bc8cff" font-size="9">◂ deal_anim_finished</text>
+  <text x="740" y="177" fill="#f78166" font-size="9">▸ get_playing_card</text>
+
+  <!-- GameManager card -->
+  <g filter="url(#glow-green)">
+    <rect x="725" y="230" width="195" height="105" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(63,185,80,0.25)" stroke-width="1"/>
+  </g>
+  <rect x="725" y="230" width="195" height="105" rx="12" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <line x1="741" y1="231" x2="904" y2="231" stroke="rgba(255,255,255,0.18)" stroke-width="1"/>
+  <text x="822" y="252" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">GameManager</text>
+  <text x="740" y="270" fill="#58a6ff" font-size="9">◂ card_selected</text>
+  <text x="740" y="283" fill="#58a6ff" font-size="9">◂ card_drag_started</text>
+  <text x="740" y="296" fill="#bc8cff" font-size="9">◂ deck_shuffled / empty</text>
+  <text x="740" y="313" fill="#f78166" font-size="9">▸ level_started</text>
+  <text x="740" y="326" fill="#f78166" font-size="9">▸ active_card_changed / inserted</text>
+
+  <!-- CardManager card -->
+  <g filter="url(#glow-green)">
+    <rect x="725" y="370" width="195" height="105" rx="12" fill="rgba(255,255,255,0.05)" stroke="rgba(63,185,80,0.20)" stroke-width="1"/>
+  </g>
+  <rect x="725" y="370" width="195" height="105" rx="12" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.10)" stroke-width="1"/>
+  <line x1="741" y1="371" x2="904" y2="371" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+  <text x="822" y="392" text-anchor="middle" fill="#f0f6fc" font-size="13" font-weight="700">CardManager</text>
+  <text x="740" y="410" fill="#f78166" font-size="9">▸ card_drawned</text>
+  <text x="740" y="423" fill="#bc8cff" font-size="9">▸ poker_deck_shuffled</text>
+  <text x="740" y="436" fill="#bc8cff" font-size="9">▸ poker_deck_is_empty</text>
+  <text x="740" y="449" fill="#bc8cff" font-size="9">▸ deal_animation_finished</text>
+
+  <!-- ====== EVENTBUS CENTER CARD (on top of arrows — glass effect) ====== -->
+  <g filter="url(#glow-purple)">
+    <rect x="345" y="85" width="270" height="400" rx="14" fill="rgba(255,255,255,0.03)" stroke="rgba(188,140,255,0.3)" stroke-width="1.5"/>
+  </g>
+  <!-- Glass body -->
+  <rect x="345" y="85" width="270" height="400" rx="14" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+  <!-- Top highlight -->
+  <line x1="361" y1="86" x2="599" y2="86" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <!-- Inner glow accent at top -->
+  <rect x="345" y="85" width="270" height="2" rx="1" fill="rgba(188,140,255,0.4)"/>
+
+  <!-- EventBus content — signal groups listed inside -->
+  <text x="480" y="112" text-anchor="middle" fill="#f0f6fc" font-size="15" font-weight="700">EventBus</text>
+  <text x="480" y="130" text-anchor="middle" fill="#8b949e" font-size="9" opacity="0.7">autoload · 全局信号总线</text>
+
+  <!-- Signal group labels with colored dots -->
+  <circle cx="370" cy="155" r="4" fill="#58a6ff" opacity="0.8"/>
+  <text x="382" y="158" fill="#8b949e" font-size="11" font-weight="600">UI → Logic</text>
+  <text x="382" y="174" fill="#8b949e" font-size="9">card_slot_clicked</text>
+  <text x="382" y="188" fill="#8b949e" font-size="9">card_selected · active_card_played</text>
+  <text x="382" y="202" fill="#8b949e" font-size="9">card_drag_started</text>
+  <text x="382" y="216" fill="#8b949e" font-size="9">update_hand_queue_ui</text>
+
+  <circle cx="370" cy="242" r="4" fill="#f78166" opacity="0.8"/>
+  <text x="382" y="245" fill="#8b949e" font-size="11" font-weight="600">Logic → UI</text>
+  <text x="382" y="261" fill="#8b949e" font-size="9">card_drawned</text>
+  <text x="382" y="275" fill="#8b949e" font-size="9">active_card_changed</text>
+  <text x="382" y="289" fill="#8b949e" font-size="9">level_started</text>
+  <text x="382" y="303" fill="#8b949e" font-size="9">active_card_inserted</text>
+  <text x="382" y="317" fill="#8b949e" font-size="9">get_playing_card</text>
+
+  <circle cx="370" cy="343" r="4" fill="#bc8cff" opacity="0.8"/>
+  <text x="382" y="346" fill="#8b949e" font-size="11" font-weight="600">Logic 内部</text>
+  <text x="382" y="362" fill="#8b949e" font-size="9">poker_deck_shuffled</text>
+  <text x="382" y="376" fill="#8b949e" font-size="9">poker_deck_is_empty</text>
+  <text x="382" y="390" fill="#8b949e" font-size="9">deal_animation_finished</text>
+
+  <circle cx="370" cy="416" r="4" fill="#3fb950" opacity="0.8"/>
+  <text x="382" y="419" fill="#8b949e" font-size="11" font-weight="600">UI ↔ UI</text>
+  <text x="382" y="435" fill="#8b949e" font-size="9">card_droped</text>
+
+  <!-- === Category flow label arrows inside EventBus (subtle) === -->
+  <!-- UI→Logic flow indicator -->
+  <path d="M 355,165 L 355,185" stroke="#58a6ff" stroke-width="1" fill="none" opacity="0.3"/>
+  <!-- Logic→UI flow indicator -->
+  <path d="M 355,252 L 355,272" stroke="#f78166" stroke-width="1" fill="none" opacity="0.3"/>
+
+  <!-- ====== LEGEND ====== -->
+  <rect x="310" y="510" width="340" height="185" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <text x="480" y="535" text-anchor="middle" fill="#8b949e" font-size="11" font-weight="700" letter-spacing="0.08em">信号类型图例</text>
+
+  <!-- Blue -->
+  <line x1="335" y1="558" x2="385" y2="558" stroke="#58a6ff" stroke-width="1.5" marker-end="url(#arr-blue)"/>
+  <text x="395" y="562" fill="#8b949e" font-size="11">UI → Logic</text>
+  <text x="480" y="562" fill="#58a6ff" font-size="10">用户操作触发，UI 层发出信号</text>
+
+  <!-- Orange -->
+  <line x1="335" y1="583" x2="385" y2="583" stroke="#f78166" stroke-width="1.5" marker-end="url(#arr-orange)"/>
+  <text x="395" y="587" fill="#8b949e" font-size="11">Logic → UI &nbsp;</text>
+  <text x="480" y="587" fill="#f78166" font-size="10">逻辑层状态变更，驱动 UI 更新</text>
+
+  <!-- Purple -->
+  <line x1="335" y1="608" x2="385" y2="608" stroke="#bc8cff" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arr-purple)"/>
+  <text x="395" y="612" fill="#8b949e" font-size="11">Logic 内部 &nbsp;</text>
+  <text x="480" y="612" fill="#bc8cff" font-size="10">逻辑层组件间直接通信</text>
+
+  <!-- Green -->
+  <line x1="335" y1="633" x2="385" y2="633" stroke="#3fb950" stroke-width="1.5" stroke-dasharray="4,2" marker-end="url(#arr-green)"/>
+  <text x="395" y="637" fill="#8b949e" font-size="11">UI ↔ UI &nbsp;</text>
+  <text x="480" y="637" fill="#3fb950" font-size="10">UI 组件间拖放交互</text>
+
+  <!-- Additional info line -->
+  <text x="480" y="680" text-anchor="middle" fill="#8b949e" font-size="9" opacity="0.6">4 个信号组 · 16+ 信号 · 通过 EventBus autoload 解耦 UI 与逻辑层</text>
+
+  <!-- ====== SECTION LABELS (subtle) ====== -->
+  <text x="137" y="490" text-anchor="middle" fill="#58a6ff" font-size="9" opacity="0.4">发出信号</text>
+  <text x="823" y="490" text-anchor="middle" fill="#3fb950" font-size="9" opacity="0.4">发出 &amp; 接收信号</text>
+</svg>

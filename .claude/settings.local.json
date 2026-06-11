@@ -1,0 +1,24 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(ls \"D:/Godot/godot-mcp/\")",
+      "Read(//d/Godot/godot-mcp/**)",
+      "Bash(find /c/ -maxdepth 4 -name \"Godot.exe\" -o -name \"godot*.exe\" 2>/dev/null | head -5)",
+      "Read(//c//**)",
+      "Bash(find /d/ -maxdepth 4 -name \"Godot.exe\" -o -name \"godot*.exe\" 2>/dev/null | head -10)",
+      "Read(//d//**)",
+      "mcp__godot__launch_editor",
+      "mcp__godot__run_project",
+      "WebFetch(domain:github.com)",
+      "WebSearch",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebFetch(domain:deepwiki.com)",
+      "Bash(gh repo *)",
+      "Bash(bash d:\\\\\\\\Godot\\\\\\\\FIFOCard_Godot\\\\\\\\.claude\\\\\\\\skills\\\\\\\\research-figure\\\\\\\\scripts\\\\\\\\compile_tikz.sh d:\\\\\\\\Godot\\\\\\\\FIFOCard_Godot\\\\\\\\eventbus_signals.tex)",
+      "Bash(bash \".claude/skills/research-figure/scripts/compile_tikz.sh\" \"eventbus_signals.tex\")",
+      "Bash(python -c \"import cairosvg; print\\('cairosvg version:', cairosvg.__version__\\)\")",
+      "Bash(pip install *)"
+    ]
+  },
+  "enableAllProjectMcpServers": true
+}

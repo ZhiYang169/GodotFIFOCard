@@ -1,0 +1,207 @@
+\documentclass[border=5pt]{standalone}
+\usepackage{tikz}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{xeCJK}
+\setCJKmainfont{Microsoft YaHei}
+\setCJKsansfont{Microsoft YaHei}
+\setCJKmonofont{Microsoft YaHei}
+\usetikzlibrary{positioning, arrows.meta, calc, fit, backgrounds}
+
+% --- Color Scheme (Blue-Gray) ---
+\definecolor{bgPrimary}{HTML}{DAE8FC}
+\definecolor{bgSecondary}{HTML}{E8EEF7}
+\definecolor{bgAccent}{HTML}{B3CDE3}
+\definecolor{bgInput}{HTML}{F0F4F8}
+\definecolor{borderPrimary}{HTML}{6C8EBF}
+\definecolor{borderAccent}{HTML}{3A6EA5}
+\definecolor{arrowColor}{HTML}{4A6A8A}
+\definecolor{textMain}{HTML}{2C3E50}
+\definecolor{textLight}{HTML}{7F8C8D}
+\definecolor{bgHighlight}{HTML}{FFF3CD}
+\definecolor{bgDead}{HTML}{FADBD8}
+\definecolor{borderDead}{HTML}{C0392B}
+\definecolor{arrowDead}{HTML}{C0392B}
+\definecolor{bgUnused}{HTML}{F2F3F4}
+
+% --- Styles ---
+\tikzset{
+  modelnode/.style={
+    draw=borderAccent, fill=bgAccent, rounded corners=4pt,
+    minimum width=2.8cm, minimum height=0.85cm,
+    font=\sffamily\small\bfseries, text=textMain, line width=1.0pt, align=center,
+  },
+  statenode/.style={
+    draw=borderPrimary, fill=bgPrimary, rounded corners=4pt,
+    minimum width=2.8cm, minimum height=0.85cm,
+    font=\sffamily\small, text=textMain, line width=0.6pt, align=center,
+  },
+  viewnode/.style={
+    draw=borderPrimary, fill=bgSecondary, rounded corners=4pt,
+    minimum width=2.8cm, minimum height=0.85cm,
+    font=\sffamily\small, text=textMain, line width=0.6pt, align=center,
+  },
+  deadnode/.style={
+    draw=borderDead, fill=bgDead, rounded corners=4pt,
+    minimum width=2.8cm, minimum height=0.85cm,
+    font=\sffamily\small, text=textMain, line width=0.6pt, align=center,
+  },
+  layerbox/.style={
+    draw=borderPrimary, fill=bgInput, fill opacity=0.4,
+    rounded corners=6pt, inner sep=12pt, line width=0.5pt, dashed,
+  },
+  stdarrow/.style={
+    -{Stealth[length=5pt, width=4pt]}, line width=0.6pt, color=arrowColor,
+  },
+  deadarrow/.style={
+    -{Stealth[length=4pt, width=3pt]}, line width=0.5pt, color=arrowDead, dashed,
+  },
+  signallabel/.style={
+    font=\sffamily\scriptsize\color{arrowColor}, fill=white, inner sep=1pt,
+  },
+  deadlabel/.style={
+    font=\sffamily\scriptsize\color{arrowDead}, fill=white, inner sep=1pt,
+  },
+}
+
+\begin{document}
+\begin{tikzpicture}[node distance=1.2cm]
+
+% ===================================================================
+% MODEL LAYER (left)
+% ===================================================================
+\node[modelnode] (gm) {\textbf{GameManager}\\[-1pt]{\footnotesize\color{textLight}数据持有 + 匹配检测}};
+\node[deadnode, below=1.5cm of gm] (cm) {CardManager\\[-1pt]{\footnotesize\color{textLight}发牌 / 洗牌}};
+
+% Layer box
+\begin{scope}[on background layer]
+  \node[layerbox, fit=(gm)(cm),
+    label={[font=\sffamily\footnotesize\bfseries, text=borderAccent]north west:Model (业务层)}] {};
+\end{scope}
+
+% ===================================================================
+% CONTROLLER LAYER (center)
+% ===================================================================
+\node[statenode, right=3.5cm of gm] (setup) {SetupState\\[-1pt]{\footnotesize\color{textLight}发牌 → IDLE}};
+\node[statenode, below=0.7cm of setup] (idle) {IdleState\\[-1pt]{\footnotesize\color{textLight}等待输入 → MATCHING}};
+\node[statenode, below=0.7cm of idle] (playing) {PlayingCardState\\[-1pt]{\footnotesize\color{textLight}出牌 → (无出口)}};
+
+% Layer box
+\begin{scope}[on background layer]
+  \node[layerbox, fit=(setup)(idle)(playing),
+    label={[font=\sffamily\footnotesize\bfseries, text=borderPrimary]north west:Controller (调度层)}] {};
+\end{scope}
+
+% ===================================================================
+% VIEW LAYER (right)
+% ===================================================================
+\node[viewnode, right=3.5cm of setup] (card) {Card\\[-1pt]{\footnotesize\color{textLight}拖拽 / 点击}};
+\node[viewnode, below=0.2cm of card] (acs) {ActiveCardSlot\\[-1pt]{\footnotesize\color{textLight}活牌区 + 拖拽幻影}};
+\node[viewnode, below=0.2cm of acs] (hcq) {HandCardQueue\\[-1pt]{\footnotesize\color{textLight}手牌队列UI}};
+\node[viewnode, below=0.2cm of hcq] (pc) {PlayingCard\\[-1pt]{\footnotesize\color{textLight}出牌展示区}};
+
+% Layer box
+\begin{scope}[on background layer]
+  \node[layerbox, fit=(card)(acs)(hcq)(pc),
+    label={[font=\sffamily\footnotesize\bfseries, text=borderPrimary]north west:View (表现层)}] {};
+\end{scope}
+
+% ===================================================================
+% ACTIVE SIGNALS: GameManager → View
+% ===================================================================
+
+% GameManager → HandCardQueue (3 signals bundled)
+\draw[stdarrow, rounded corners=4pt]
+  (gm.east) -- ++(0.6cm, 0) -- ++(0, -1.8cm) -|
+  node[pos=0.55, signallabel, xshift=-2pt] {\texttt{card\_drawned}}
+  node[pos=0.65, signallabel, xshift=-2pt] {\texttt{level\_started}}
+  node[pos=0.75, signallabel, xshift=-2pt] {\texttt{update\_hand\_queue\_ui}}
+  (hcq.west);
+
+% GameManager → ActiveCardSlot
+\draw[stdarrow]
+  ($(gm.east)+(0,0.2cm)$) -- ($(acs.west)+(0,0.2cm)$)
+  node[midway, signallabel] {\texttt{active\_card\_changed}};
+
+% ===================================================================
+% ACTIVE SIGNALS: Card → HandCardQueue, ActiveCardSlot
+% ===================================================================
+
+% Card → HandCardQueue (drag_started + droped)
+\draw[stdarrow, rounded corners=3pt]
+  (card.south) -- ++(0, -0.35cm) -|
+  node[pos=0.7, signallabel, xshift=8pt] {\texttt{card\_drag\_started}}
+  node[pos=0.85, signallabel, xshift=8pt] {\texttt{card\_droped}}
+  (hcq.north);
+
+% Card → ActiveCardSlot (drag_started + droped)
+\draw[stdarrow, rounded corners=3pt]
+  (card.south) -- ++(0, -0.1cm) -|
+  node[pos=0.55, signallabel, xshift=8pt] {\texttt{card\_drag\_started}}
+  node[pos=0.7, signallabel, xshift=8pt] {\texttt{card\_droped}}
+  (acs.north);
+
+% ===================================================================
+% ACTIVE SIGNALS: HandCardQueue → Controller, View
+% ===================================================================
+
+% HandCardQueue → IdleState (active_card_inserted)  ← goes LEFT
+\draw[stdarrow]
+  (hcq.west) -- ($(idle.east)+(0,-0.1cm)$)
+  node[midway, signallabel, above] {\texttt{active\_card\_inserted}};
+
+% HandCardQueue → SetupState (deal_animation_finished)  ← goes LEFT, UP
+\draw[stdarrow, rounded corners=4pt]
+  (hcq.north west) -- ++(-0.8cm, 0) |- (setup.east)
+  node[pos=0.3, signallabel, below] {\texttt{deal\_anim\_finished}};
+
+% HandCardQueue → ActiveCardSlot (active_card_inserted)  ← same layer, up
+\draw[stdarrow, rounded corners=3pt]
+  ($(hcq.north)+(0.3cm,0)$) -- ++(0, 0.3cm) -|
+  node[pos=0.6, signallabel, xshift=-6pt] {\texttt{active\_card\_inserted}}
+  (acs.south);
+
+% ===================================================================
+% ACTIVE SIGNALS: PlayingCardState → HandCardQueue, PlayingCard
+% ===================================================================
+
+% PlayingCardState → HandCardQueue
+\draw[stdarrow]
+  (playing.east) -- (hcq.west |- playing.east)
+  node[midway, signallabel, above] {\texttt{get\_playing\_card}};
+
+% PlayingCardState → PlayingCard
+\draw[stdarrow, rounded corners=3pt]
+  ($(playing.east)+(0,-0.15cm)$) -- ++(0.6cm, 0) |- (pc.west)
+  node[pos=0.7, signallabel, below] {\texttt{get\_playing\_card}};
+
+% ===================================================================
+% DEAD SIGNALS (emitted but never connected)
+% ===================================================================
+
+% Card → nowhere (card_selected)
+\draw[deadarrow]
+  (card.north) -- ++(0, 0.6cm)
+  node[midway, deadlabel, right] {\texttt{card\_selected} (无人接收)};
+
+% CardManager → nowhere (poker_deck_shuffled, poker_deck_is_empty)
+\draw[deadarrow, rounded corners=3pt]
+  (cm.east) -- ++(0.5cm, 0)
+  node[midway, deadlabel, above=-2pt] {\texttt{poker\_deck\_shuffled}}
+  node[midway, deadlabel, below=-2pt] {\texttt{poker\_deck\_is\_empty}}
+  node[deadlabel, right] {(无人接收)};
+
+% ===================================================================
+% LEGEND: 7 unused signals (defined but never emitted/connected)
+% ===================================================================
+\node[draw=borderPrimary, fill=bgUnused, rounded corners=3pt,
+      font=\sffamily\footnotesize, text=textLight, align=left,
+      inner sep=6pt, below=0.4cm of cm.south west, anchor=north west] (legend) {
+  \textbf{\color{textMain}EventBus 中已定义但未使用的信号:}\\[2pt]
+  \texttt{card\_slot\_clicked}\quad\texttt{active\_card\_played}\quad\texttt{item\_used}\\[1pt]
+  \texttt{shop\_item\_purchased}\quad\texttt{next\_level\_requested}\quad\texttt{restart\_requested}\\[1pt]
+  \texttt{return\_to\_menu\_requested}
+};
+
+\end{tikzpicture}
+\end{document}
