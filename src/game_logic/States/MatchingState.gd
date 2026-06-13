@@ -8,5 +8,5 @@ func enter() ->void:
 	var success = game_manager._get_suit_segment()
 	if success :
 		go_to("PLAYING")
-	# else:
-		# go_to("PopActiveCard")
+	else:
+		go_to("POP_CARD")

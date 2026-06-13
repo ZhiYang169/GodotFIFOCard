@@ -21,6 +21,9 @@ mono_crash.*
 [Dd]esktop.ini
 Thumbs.db
 
+# Assets (large binary files, keep locally only)
+assets/
+
 # Build/export
 android/
 ios/

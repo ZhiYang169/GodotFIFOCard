@@ -1,10 +1,10 @@
 class_name HandCardQueue
 extends Control
 
-@export var card_scene: PackedScene  
+@export var card_scene: PackedScene
 # @export var card_manager: CardManager
 # @export var game_manager: GameManager
-@export var SLOT_SIZE:Vector2 
+@export var SLOT_SIZE:Vector2
 @export var GAP_SIZE = Vector2i(20,140)
 @export var deal_interval: float = 0.08
 @export var fly_duration:float = 0.25
@@ -17,13 +17,13 @@ var cards_ui : Array[Card] = []
 var slots :Array[Control] = []
 var gaps  :Array[Button]  = []
 var insert_index :int = -1
-var hand_size_local :int = 0 
+var hand_size_local :int = 0
 # signal card_drawned(handcard_data:Array[CardData])
 
 func _ready():
 	# _create_slots(15)
 	_connect_signals()
-	
+
 func _clear_slots() ->void:
 	for i in range(len(slots)):
 		if is_instance_valid(slots[i]):
@@ -95,7 +95,7 @@ func _disconnect_signals():
 func _on_level_started(hand_size:int):
 	_create_slots(hand_size+1)
 	# hand_size_local = hand_size
-	
+
 func _on_card_drawned(event:CardEvent):
 	var handcard_data = event.cards
 
@@ -111,7 +111,7 @@ func _on_card_drawned(event:CardEvent):
 	var total_time= handcard_data.size()*deal_interval+fly_duration
 	get_tree().create_timer(total_time).timeout.connect(_on_deal_finished)
 	# _disconnect_signals()
-			
+
 func update_handque(cards:Array[CardData]) ->void :
 	print("update handcard queue")
 	_clear_slots()
@@ -120,7 +120,7 @@ func update_handque(cards:Array[CardData]) ->void :
 			card_ui.queue_free()
 	cards_ui.clear()
 	_create_slots(cards.size())
-	for card in cards : 
+	for card in cards :
 		cards_ui.append(_create_card_ui(card))
 	for i in range(len(slots)):
 		slots[i].add_child(cards_ui[i])
@@ -136,7 +136,7 @@ func _remove_cards_and_shift_hand_card_queue(remove_num,remove_start_pos:int) ->
 	for read_idx in range(remove_start_pos -1,-1,-1):
 		slots[read_idx].remove_child(cards_ui[read_idx])
 		slots[write_idx].add_child(cards_ui[read_idx])
-	
+
 		var offset = slots[read_idx].global_position - slots[write_idx].global_position
 
 		cards_ui[read_idx].position = offset
@@ -173,28 +173,49 @@ func _on_drag_ended(card: Card, _pos: Vector2) ->void:
 		active_card_insert_event.cards.clear()
 		active_card_insert_event.cards.append(card.data)
 		EventBus.active_card_inserted.emit(active_card_insert_event)
-		
+
 	for gap in gaps:
 		gap.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _on_gap_mouse_entered(index:int):
 	print("enter gap %d" %index)
-	#TODO activecard
+	_highlight_adjacent_cards(insert_index, false)  # 关掉旧位置的高亮
 	insert_index = index
-	
+	_highlight_adjacent_cards(index, true)           # 点亮新位置的相邻牌
+
 
 func _on_gap_mouse_exited():
+	_highlight_adjacent_cards(insert_index, false)
 	insert_index = -1;
 
+func _highlight_adjacent_cards(gap_index: int, on: bool) -> void:
+	if gap_index < 0:
+		return
+	# 左侧牌: cards_ui[gap_index - 1]
+	var left_idx = gap_index - 1
+	if left_idx >= 0 and left_idx < cards_ui.size():
+		if cards_ui[left_idx] != null:
+			cards_ui[left_idx].set_highlight(on)
+	# 右侧牌: cards_ui[gap_index]
+	var right_idx = gap_index
+	if right_idx >= 0 and right_idx < cards_ui.size():
+		if cards_ui[right_idx] != null:
+			cards_ui[right_idx].set_highlight(on)
+
 func _on_active_card_changed(event:CardEvent):
-	var remove_num = event.cards.size()
+	var remove_num = 1
 	var remove_start_pos = event.start_index_in_handcards
+	
 	_remove_cards_and_shift_hand_card_queue(remove_num,remove_start_pos)
+	update_handque(event.cards.slice(0,-1))
+
 
 func _on_playing_card_get(event:CardEvent):
 	var remove_num = event.cards.size()
 	var remove_start_pos = event.start_index_in_handcards
 	_remove_cards_and_shift_hand_card_queue(remove_num,remove_start_pos)
+
+
 
 func _on_card_ui_update(event:CardEvent):
 	update_handque(event.cards)

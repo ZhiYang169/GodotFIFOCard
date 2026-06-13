@@ -28,7 +28,7 @@ var dbg_hands_card_set = [
 	{"suit":CardData.Suit.CLUBS   , "rank":"5"},
 	{"suit":CardData.Suit.SPADES  , "rank":"A"},
 	{"suit":CardData.Suit.SPADES  , "rank":"K"},
-	{"suit":CardData.Suit.CLUBS   , "rank":"J"},
+	{"suit":CardData.Suit.HEARTS   , "rank":"J"},
 	{"suit":CardData.Suit.DIAMONDS, "rank":"4"},
 	{"suit":CardData.Suit.DIAMONDS, "rank":"9"},
 	{"suit":CardData.Suit.SPADES  , "rank":"Q"},
@@ -65,7 +65,7 @@ func start_level(level_id:int):
 	# EventBus.active_card_changed.emit(active_card_changed_event)
 
 	var card_drawn_event = CardEvent.new()
-	card_drawn_event.cards = hand_cards
+	card_drawn_event.cards = hand_cards.duplicate()
 	EventBus.card_drawned.emit(card_drawn_event)
 
 	# pop_active_card()
@@ -74,7 +74,7 @@ func insert_active_card(index:int,card_data:CardData) -> void:
 	hand_cards.insert(index,card_data)
 	insert_index = index
 	var hand_cards_update_event = CardEvent.new()
-	hand_cards_update_event.cards = hand_cards
+	hand_cards_update_event.cards = hand_cards.duplicate()
 	EventBus.update_hand_queue_ui.emit(hand_cards_update_event)
 
 
@@ -131,7 +131,7 @@ func get_last_matches() ->CardEvent:
 		match_info.start_index_in_handcards =-1
 		return match_info
 
-	match_info.cards  = current_matches[-1]
+	match_info.cards  = current_matches[-1].duplicate()
 	match_info.start_index_in_handcards = matches_start_index_in_hand_queue
 	return match_info
 
@@ -172,12 +172,11 @@ func _get_aviable_handqueue_segment() :
 		return false
 
 func pop_active_card() -> CardEvent:
-	active_card = hand_cards[-1]
+	active_card = hand_cards[-1].duplicate()
 	var active_card_changed_event = CardEvent.new()
 	active_card_changed_event.cards.clear()
-	active_card_changed_event.cards.append(active_card)
+	active_card_changed_event.cards = hand_cards.duplicate()
 	active_card_changed_event.start_index_in_handcards = hand_cards.size() -1
-	
 	hand_cards.pop_back()
 	return active_card_changed_event
 
