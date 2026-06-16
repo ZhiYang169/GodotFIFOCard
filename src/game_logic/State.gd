@@ -13,7 +13,7 @@ var state_machine: StateMachine
 var game_manager: GameManager:
 	get:
 		if not _game_manager:
-			_game_manager = get_node_or_null("/root/Game/GameManager")
+			_game_manager = get_node_or_null("/root/Game/GameManager") as GameManager
 		return _game_manager
 var _game_manager: GameManager
 

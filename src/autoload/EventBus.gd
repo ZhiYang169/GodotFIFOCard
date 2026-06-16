@@ -27,3 +27,12 @@ signal deal_animation_finished()
 
 # ====UI <----> UI =========
 signal card_droped(card:Card,pos:Vector2)
+
+# ====动画时序信号 (UI → 状态机) ====
+signal elimination_animation_finished()   # 消除动画播放完毕
+signal fill_animation_finished()          # 补牌动画播放完毕
+
+# ====消除/补牌事件 (状态机 → UI) ====
+signal clear_play_area()                     # 新一轮消除开始前清空 play area
+signal cards_eliminated(event: CardEvent)  # 通知 UI 播放消除动画
+signal cards_filled(event: CardEvent)      # 通知 UI 播放补牌动画

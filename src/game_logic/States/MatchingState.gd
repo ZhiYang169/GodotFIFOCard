@@ -2,11 +2,12 @@ class_name MatchingState
 extends States
 
 
-func enter() ->void:
+func enter() -> void:
 	super.enter()
-	print("Matching State Enter")
+	print("MatchingState Enter")
+
 	var success = game_manager._get_suit_segment()
-	if success :
+	if success:
 		go_to("PLAYING")
 	else:
 		go_to("POP_CARD")

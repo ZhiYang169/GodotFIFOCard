@@ -1,10 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://dv3kdydgc58a2"]
+[gd_scene load_steps=15 format=3 uid="uid://dv3kdydgc58a2"]
 
 [ext_resource type="Texture2D" uid="uid://ikstekks2jus" path="res://assets/textures/card_back.png" id="1_400sg"]
 [ext_resource type="Script" uid="uid://5ttxijjgell" path="res://src/ui/HandCardQueue.gd" id="1_ibkli"]
 [ext_resource type="Script" uid="uid://bbvks3kr4qh0o" path="res://src/game_logic/GameManager.gd" id="1_qbsmt"]
 [ext_resource type="Script" uid="uid://du3levtalbvrm" path="res://src/ui/PlayingCard.gd" id="2_mcffj"]
-[ext_resource type="PackedScene" uid="uid://bi13twqi7cj1c" path="res://scenes/card.tscn" id="3_cpr0p"]
 [ext_resource type="Script" uid="uid://bh5b0qi1bdmak" path="res://src/ui/ActiveCardSlot.gd" id="3_kiw3p"]
 [ext_resource type="Script" uid="uid://ba6elhra1vvqb" path="res://src/cards/CardManager.gd" id="4_78awf"]
 [ext_resource type="Script" uid="uid://dxetqeynjayvu" path="res://src/game_logic/StateMachine.gd" id="5_s0nni"]
@@ -13,6 +12,8 @@
 [ext_resource type="Script" uid="uid://dwy3c4qra6v3e" path="res://src/game_logic/States/MatchingState.gd" id="10_3xj3m"]
 [ext_resource type="Script" uid="uid://ddcbhn0t8577t" path="res://src/game_logic/States/PalyingCardState.gd" id="11_mcffj"]
 [ext_resource type="Script" uid="uid://byv4idyad3l7l" path="res://src/game_logic/States/PopCardState.gd" id="13_2rd6h"]
+[ext_resource type="Script" uid="uid://byt5lq7hswqu7" path="res://src/game_logic/States/FillingState.gd" id="14_fillx"]
+[ext_resource type="PackedScene" uid="uid://bi13twqi7cj1c" path="res://scenes/card.tscn" id="15_cardsc"]
 
 [node name="Game" type="Control"]
 layout_mode = 3
@@ -63,24 +64,21 @@ offset_top = 81.0
 offset_right = 1868.0
 offset_bottom = 221.0
 script = ExtResource("2_mcffj")
-card_scene = ExtResource("3_cpr0p")
+card_scene = ExtResource("15_cardsc")
 
 [node name="PlayingCardContainter" type="Control" parent="PlayingCard"]
 anchors_preset = 0
 offset_right = 1800.0
 offset_bottom = 140.0
 
-[node name="HandCardQueue" type="Control" parent="." node_paths=PackedStringArray("draw_pile")]
+[node name="HandCardQueue" type="Control" parent="."]
 anchors_preset = 0
 offset_left = 316.0
 offset_top = 631.0
 offset_right = 1616.0
 offset_bottom = 771.0
 script = ExtResource("1_ibkli")
-card_scene = ExtResource("3_cpr0p")
-deal_interval = 0.1
-fly_duration = 0.5
-draw_pile = NodePath("../DrawPile")
+card_scene = ExtResource("15_cardsc")
 
 [node name="HandCardContainter" type="Control" parent="HandCardQueue"]
 anchors_preset = 0
@@ -94,14 +92,14 @@ offset_top = 896.0
 offset_right = 984.0
 offset_bottom = 1036.0
 script = ExtResource("3_kiw3p")
-card_scene = ExtResource("3_cpr0p")
+card_scene = ExtResource("15_cardsc")
 
 [node name="CardManager" type="Node" parent="."]
 script = ExtResource("4_78awf")
 
-[node name="GameManager" type="Node" parent="." node_paths=PackedStringArray("card_manager")]
+[node name="GameManager" type="Node" parent="."]
 script = ExtResource("1_qbsmt")
-card_manager = NodePath("../CardManager")
+dbg_hand_cards = false
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initial_state")]
 script = ExtResource("5_s0nni")
@@ -125,5 +123,8 @@ metadata/_custom_type_script = "uid://seby4cehylx1"
 [node name="POP_CARD" type="Node" parent="StateMachine"]
 script = ExtResource("13_2rd6h")
 metadata/_custom_type_script = "uid://byv4idyad3l7l"
+
+[node name="FILLING" type="Node" parent="StateMachine"]
+script = ExtResource("14_fillx")
 
 [node name="DragLayer" type="CanvasLayer" parent="."]

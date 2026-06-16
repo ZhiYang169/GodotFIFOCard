@@ -2,8 +2,8 @@ class_name ActiveCardSlot
 extends Control
 
 
-@export var card_scene: PackedScene  
-@export var SLOT_SIZE:Vector2 
+@export var card_scene: PackedScene
+@export var SLOT_SIZE:Vector2
 @onready var drag_layer : CanvasLayer = $"../DragLayer"
 var scale_ration : float
 var _drag_ghost
@@ -24,25 +24,21 @@ func _initial_active_card_slot():
 
 
 func _on_drag_started(card: Card) -> void:
-	# 只处理自己槽里的牌
 	print("=== drag started ===")
 	print("card is null? ", card == null)
 	print("card parent: ", card.get_parent())
 	if card.get_parent() != self:
 		return
 	print("drag_started")
-	# 创建影子
 	_drag_ghost = card_scene.instantiate()
 	_drag_ghost.data = card.data
 	_drag_ghost.scale = card.scale
-	_drag_ghost.modulate.a = 1   # 半透明
-	_drag_ghost.z_index = 100      # 置顶
+	_drag_ghost.modulate.a = 1
+	_drag_ghost.z_index = 100
 	_drag_ghost.top_level = true
 	_drag_ghost.mouse_filter= Control.MOUSE_FILTER_IGNORE
-	# _drag_ghost.CardButton.mouse_filter = Control.MOUSE_FILTER_PASS
 	_set_mouse_filter_recursive(_drag_ghost, Control.MOUSE_FILTER_IGNORE)
 	drag_layer.add_child(_drag_ghost)
-	#drag_layer.mouse_filter = MOUSE_FILTER_PASS
 	_drag_ghost.global_position = card.global_position
 	if active_card:
 		active_card.modulate.a = 0
@@ -58,6 +54,7 @@ func _connect_signals():
 	EventBus.card_drag_started.connect(_on_drag_started)
 	EventBus.card_droped.connect(_on_drag_ended)
 	EventBus.active_card_inserted.connect(_on_active_card_inserted)
+
 func _disconnect_signals():
 	EventBus.active_card_changed.disconnect(_on_active_card_changed)
 	EventBus.card_drag_started.disconnect(_on_drag_started)
@@ -65,19 +62,21 @@ func _disconnect_signals():
 	EventBus.active_card_inserted.disconnect(_on_active_card_inserted)
 
 func _on_active_card_changed(event:CardEvent):
-	print("active change")
+	print("active change — waiting for fly animation")
+	# 等手牌队列的飞行动画结束再显示
+	await get_tree().create_timer(0.3).timeout
 	var active_card_data = event.cards[-1]
 	active_card = card_scene.instantiate()
 	active_card.data = active_card_data
 	active_card.scale = Vector2(scale_ration,scale_ration)
-	active_card.modulate.a = 1 
+	active_card.modulate.a = 1
 	active_card.draggable = true
 	self.add_child(active_card)
+	print("active card shown")
 
 func _on_drag_ended(card: Card, _pos: Vector2) -> void:
 	if card.get_parent() != self:
 		return
-	#drag_layer.mouse_filter = MOUSE_FILTER_IGNORE
 	if _drag_ghost:
 		print("activeslot drag_end")
 		_drag_ghost.queue_free()
@@ -96,5 +95,4 @@ func _on_active_card_inserted(event:CardEvent) ->void:
 
 func _process(_delta: float) -> void:
 	if _drag_ghost:
-		# 影子中心跟随鼠标
 		_drag_ghost.global_position = get_global_mouse_position() - (_drag_ghost.size * _drag_ghost.scale / 2)
